@@ -1,0 +1,1 @@
+ALTER TABLE "movimentos" ADD COLUMN "departamento" text NOT NULL;
