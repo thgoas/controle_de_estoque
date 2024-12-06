@@ -7,7 +7,7 @@ export const Product = z.object({
     referencia: z.string().min(2, 'Deve conter pelo menos 2 caracteres'),
     descricao: z.string().min(4, 'Deve conter pelo menos 4 caracteres'),
     complemento: z.string().nullable().optional(),
-    grade: z.string().min(2, 'Deve conter pelo menos 2 caracteres'),
+    grade: z.string().min(1, 'Deve conter pelo menos 1 caracteres'),
     tipo: z.string().min(2, 'Deve conter pelo menos 2 caracteres'),
     modelo: z.string().min(2, 'Deve conter pelo menos 2 caracteres'),
 })

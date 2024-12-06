@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import { eq } from 'drizzle-orm'
 
 export default eventHandler(async (event) => {
+ 
     const body = await readBody(event)
     const { email, password } = body
 
@@ -22,6 +23,7 @@ export default eventHandler(async (event) => {
         })
     }
 
+    console.log('db', db)
     const user = await db
         .select()
         .from(tables.users)
@@ -51,7 +53,7 @@ export default eventHandler(async (event) => {
             role: user[0].role,
             department: user[0].department,
         },
-        process.env.JWT_SECRET!,
+        useRuntimeConfig().public.jwtSecret,
         { expiresIn: '1d' }
     )
 

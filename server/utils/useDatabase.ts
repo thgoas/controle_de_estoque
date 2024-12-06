@@ -5,10 +5,10 @@ export * as tables from '~/server/database/schema';
 let database: NodePgDatabase | null = null;
 
 export const useDatabase = () => {
-  const { pgDBURL } = useRuntimeConfig();
+  const config = useRuntimeConfig();
 
-  if (pgDBURL) {
-    database = drizzle(process.env.DATABASE_URL!)
+  if (config.public.pgDbUrl) {
+    database = drizzle(config.public.pgDbUrl);
   }
 
   return database;

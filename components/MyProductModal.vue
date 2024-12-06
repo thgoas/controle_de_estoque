@@ -42,6 +42,7 @@ const cleanState = () => {
 }
 
 const onSubmit = async () => {
+  console.log('state', state)
   if(state?.id !== 0) {
     await updateProduct(props.product.id! ,state)
   } else {
@@ -144,7 +145,7 @@ const addTamanho = (value: string) => {
                   />
                 </div>
               </UFormGroup>
-              <UFormGroup label="Grade tamanhos" class='w-full'>
+              <UFormGroup label="Grade tamanhos" name="grade" class='w-full'>
                 <UInput v-model="state.grade" disabled />
               </UFormGroup>
             </div>

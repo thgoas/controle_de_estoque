@@ -16,7 +16,11 @@ export default defineNuxtConfig({
   modules: ['@nuxt/ui'],
 
   runtimeConfig: {
-    pgDBURL: process.env.DATABASE_URL,
+    public: {
+      pgDbUrl: process.env.NUXT_PUBLIC_PG_DB_URL?.trim(),
+      jwtSecret: process.env.NUXT_PUBLIC_JWT_SECRET?.trim(),
+      
+    }
 
   },
 })

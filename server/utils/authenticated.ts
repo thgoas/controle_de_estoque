@@ -20,7 +20,7 @@ export const authenticated = async (event: any) => {
     const token = authHeader.split(' ')[1]
   
     try {
-      const secretKey = process.env.JWT_SECRET! 
+      const secretKey = useRuntimeConfig().public.jwtSecret 
       const decoded = jwt.verify(token, secretKey)
   
       event.context.user = decoded
