@@ -68,6 +68,7 @@ export function useMovimentos() {
                 },
             })
             movimentosCount.value = response
+        
         } catch (e) {
             error.value = (e as Error).message
             addToast({

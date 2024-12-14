@@ -50,6 +50,9 @@ function select(row: MovimentoCount) {
     navigateTo(`/estoque/${findMovimento?.id}`)
 
 }
+const page = ref(1)
+const pageCount = 5
+
 const filteredRows = computed(() => {
 
     if (!q.value) {
@@ -62,8 +65,7 @@ const filteredRows = computed(() => {
     }).slice((page.value - 1) * pageCount, (page.value) * pageCount)
 })
 
-const page = ref(1)
-const pageCount = 5
+
 
 
 
@@ -100,7 +102,7 @@ const pageCount = 5
             </template>
         </UTable>
         <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
-            <UPagination v-model="page" :page-count="pageCount" :total="filteredRows.length" />
+            <UPagination v-model="page" :page-count="pageCount" :total="movimentosCount.length" />
         </div>
 
     </UCard>
