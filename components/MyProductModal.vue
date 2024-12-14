@@ -138,7 +138,7 @@ const addTamanho = (value: string) => {
             <div class='flex gap-2'>
               <UFormGroup label="Tamanhos" name="tamanhos" class='w-full'>
                 <div class="flex gap-2">
-                  <UInput placeholder="Ex: P, M, G, 34, TU" v-model="tamanho" @keyup="tamanho = tamanho.toUpperCase()" />
+                  <UInput placeholder="Ex: P, M, G, 34, TU" v-model="tamanho" @keyup="tamanho = tamanho.toUpperCase().split(',').join('.')" />
                   <UButton
                   icon="i-heroicons-plus-circle-20-solid"
                   @click="addTamanho(tamanho)"
