@@ -48,12 +48,12 @@ export default eventHandler(async (event) => {
 
    
     
-    if (userAuth.role !== 'admin') {
-        throw createError({
-            statusCode: 403,
-            statusMessage: 'Acesso negado',
-        })
-    }
+    // if (userAuth.role !== 'admin') {
+    //     throw createError({
+    //         statusCode: 403,
+    //         statusMessage: 'Acesso negado',
+    //     })
+    // }
 
     const db = useDatabase()
     if (!db) {
