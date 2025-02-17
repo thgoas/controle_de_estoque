@@ -1,3 +1,4 @@
+import { eq } from 'drizzle-orm'
 import { Product } from '~/core/Product'
 import { DecodedUserAuth } from '~/server/utils/DecodedUserAuth'
 
@@ -6,17 +7,15 @@ export default eventHandler(async (event) => {
 
     const result = Product.safeParse(body)
 
-    if (!result.success) { 
-    
+    if (!result.success) {
         throw createError({
             statusCode: 400,
             statusMessage: 'Bad Request',
-            message: result.error.errors.map((error) => error.message).join(', '),
-
+            message: result.error.errors
+                .map((error) => error.message)
+                .join(', '),
         })
     }
-
-    
 
     const isAuthenticated = await authenticated(event)
 
@@ -35,9 +34,6 @@ export default eventHandler(async (event) => {
         })
     }
 
-  
-    
-   
     const db = useDatabase()
     if (!db) {
         throw createError({
@@ -55,13 +51,26 @@ export default eventHandler(async (event) => {
         grade: body.grade,
         tipo: body.tipo,
         modelo: body.modelo,
-        
     }
+    const productExist = await db.select().from(tables.produtos).where(eq(tables.produtos.referencia, body.referencia!))
+    if (productExist.length > 0) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: `Produto com a referencia ${product.referencia} já cadastrado`,
+        })
+    }
+    try {
+        const response = await db
+            .insert(tables.produtos)
+            .values({ ...product, departamento: userAuth.department })
+            .returning()
 
-    const response = await db
-        .insert(tables.produtos)
-        .values({...product, departamento: userAuth.department,})
-        .returning()
-
-    return response[0]
+        return response[0]
+    } catch (error) {
+        console.log(error)
+        throw createError({
+            statusCode: 500,
+            statusMessage: 'error',
+        })
+    }
 })
