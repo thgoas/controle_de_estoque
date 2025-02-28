@@ -6,5 +6,6 @@ export default defineConfig({
   out: './server/database/migrations',
   dbCredentials: {
     url: process.env.NUXT_PUBLIC_PG_DB_URL!,
-  }
+  },
+
 })
