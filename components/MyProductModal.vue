@@ -42,7 +42,6 @@ const cleanState = () => {
 }
 
 const onSubmit = async () => {
-  console.log('state', state)
   if(state?.id !== 0) {
     await updateProduct(props.product.id! ,state)
   } else {

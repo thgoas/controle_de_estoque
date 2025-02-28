@@ -71,8 +71,9 @@ export function useLogin() {
                     },
                 })
                 user.value = response 
+
                 if (response) {
-                    addRoute(response.role)
+                    addRoute(response.role, response.patrimony)
                 }
             } catch (e) {
                 error.value = (e as Error).message

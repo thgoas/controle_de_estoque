@@ -11,12 +11,14 @@ interface Request {
     password: string
     role: UserRole | UserRole.USER
     department: string
+    patrimony: boolean
 }
 
 interface Decoded {
     userId: string
     role: string
     department: string 
+    patrimony: boolean
     iat: string
     exp: string
   }
@@ -42,7 +44,7 @@ export default eventHandler(async (event) => {
     }
 
   
-    const {name, email, password, role, department} = body
+    const {name, email, password, role, department, patrimony} = body
 
     if (!name || !email || !password) { 
         throw createError({
@@ -102,7 +104,8 @@ export default eventHandler(async (event) => {
         password: passwordHashed,
         role: role,
         department: department,
-        status: true
+        status: true,
+        patrimony: patrimony
     }
 
 

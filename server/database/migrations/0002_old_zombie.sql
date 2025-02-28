@@ -1,1 +1,0 @@
-ALTER TABLE "produtos" DROP COLUMN IF EXISTS "preco";

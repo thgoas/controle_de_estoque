@@ -1,0 +1,1 @@
+ALTER TABLE "patrimonies" ADD COLUMN "connected" boolean DEFAULT false;

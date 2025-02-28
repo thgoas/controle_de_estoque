@@ -56,7 +56,8 @@ export default eventHandler(async (event) => {
         role: user[0].role!,
         department: user[0].department!,
         status: user[0].status!,
-        token: ''
+        token: '',
+        patrimony: user[0].patrimony!
     }
     
     return result

@@ -1,1 +1,0 @@
-ALTER TABLE "produtos" ADD COLUMN "departamento" text NOT NULL;

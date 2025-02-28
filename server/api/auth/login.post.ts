@@ -23,7 +23,7 @@ export default eventHandler(async (event) => {
         })
     }
 
-    console.log('db', db)
+
     const user = await db
         .select()
         .from(tables.users)
@@ -52,10 +52,18 @@ export default eventHandler(async (event) => {
             userId: user[0].id,
             role: user[0].role,
             department: user[0].department,
+            patrimony: user[0].patrimony
         },
         useRuntimeConfig().public.jwtSecret,
         { expiresIn: '1d' }
     )
 
-    return { name: user[0].name, email: user[0].email, role: user[0].role, department: user[0].department, token }
+    return { 
+        name: user[0].name, 
+        email: user[0].email, 
+        role: user[0].role, 
+        department: user[0].department, 
+        patrimony: user[0].patrimony, 
+        token 
+    }
 })

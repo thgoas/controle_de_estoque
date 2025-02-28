@@ -21,8 +21,7 @@ export default eventHandler(async (event) => {
     
         throw createError({
             statusCode: 400,
-            statusMessage: 'Bad Request',
-            message: result.error.errors.map((error) => error.message).join(', '),
+            statusMessage: 'Bad Request ' +  result.error.errors.map((error) => error.message).join(', '),
 
         })
     }

@@ -10,8 +10,7 @@ export default eventHandler(async (event) => {
     if (!result.success) {
         throw createError({
             statusCode: 400,
-            statusMessage: 'Bad Request',
-            message: result.error.errors
+            statusMessage: 'Bad Request ' + result.error.errors
                 .map((error) => error.message)
                 .join(', '),
         })

@@ -10,6 +10,7 @@ interface Request {
     password?: string
     role?: UserRole
     department?: string
+    patrimony?: boolean
     createdAt?: string
     updatedAt?: string
 }
@@ -18,6 +19,7 @@ interface Decoded {
     userId: string
     role: string
     department: string
+    patrimony: boolean
     iat: string
     exp: string
 }

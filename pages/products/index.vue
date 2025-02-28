@@ -91,7 +91,7 @@ const filteredRows = computed(() => {
 const page = ref(1)
 const pageCount = 5
 
-function newUser() {
+function newProduct() {
     cleanState()
     isProductOpen.value = true
 }
@@ -112,7 +112,7 @@ function newUser() {
 
                 </div>
                 <div class="flex gap-1">
-                    <UButton @click="newUser">Novo</UButton>
+                    <UButton @click="newProduct">Novo</UButton>
                 </div>
             </div>
             <UTable :loading="loading" :columns="selectedColumns" :rows="filteredRows"

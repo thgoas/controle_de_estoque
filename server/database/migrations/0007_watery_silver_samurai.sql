@@ -1,1 +1,0 @@
-ALTER TABLE "produtos" RENAME COLUMN "tamanho" TO "grade";

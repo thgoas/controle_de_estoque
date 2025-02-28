@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const lists = routesList()
+const {routesList: lists  } = useMyRoutes()
 const isDrawerOpen = useDrawerOpen()
 </script>
 <template>

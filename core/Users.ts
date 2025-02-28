@@ -13,6 +13,7 @@ import { z } from "zod"
     department: string
     status: boolean
     token: string
+    patrimony: boolean
   }
 
   
