@@ -3,13 +3,13 @@ import { useCurrencyInput } from 'vue-currency-input';
 
 const props = defineProps({ modelValue: Number });
 
-const { inputRef, formattedValue, setValue } = useCurrencyInput({
+const { inputRef, setValue } = useCurrencyInput({
   currency: 'BRL',
-  hideCurrencySymbolOnFocus: false,
-  hideGroupingSeparatorOnFocus: false,
+  // hideCurrencySymbolOnFocus: false,
+  // hideGroupingSeparatorOnFocus: false,
   precision: 2,
   valueRange: { min: 0 },
-  locale: 'pt-BR',
+  locale: 'pt-BR'
 });
 
 watch(
@@ -18,12 +18,13 @@ watch(
     setValue(value!);
   }
 );
+
 </script>
 
 <template>
     <UInput 
     ref="inputRef"
-    v-model="formattedValue!"
+    type="text"
     />
   
 </template>

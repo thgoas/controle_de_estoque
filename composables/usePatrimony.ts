@@ -41,7 +41,6 @@ export default function usePatrimony() {
                 },
                 body: JSON.stringify(data),
             })
-            console.log(response)   
             patrimonies.value.push(response)
 
 
