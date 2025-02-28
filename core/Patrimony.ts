@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const PatrimonyConnection = z.object({
-    delete: z.boolean().optional(),
+    status: z.string().optional(),
     patrimonyIdOne: z.string().min(1, 'Deve conter pelo menos 1 caracteres'),
     patrimonyIdTwo: z.string().min(1, 'Deve conter pelo menos 1 caracteres'),
 })

@@ -47,7 +47,13 @@ watchEffect(() => {
     cleanState()
   } else {
     if (props.data.patrimoniesConnections && props.data.patrimoniesConnections?.length > 0) {
-      state.value = props.data.patrimoniesConnections
+      state.value = props.data.patrimoniesConnections.map((item) => {
+        return {
+          patrimonyIdOne: item.patrimonyIdOne,
+          patrimonyIdTwo: item.patrimonyIdTwo,
+          status: 'continue'
+        }
+      })
     } else {
       state.value = []
     }
@@ -65,7 +71,7 @@ const addPatrimonyConnection = () => {
   state.value.push({
     patrimonyIdOne: props.data.id,
     patrimonyIdTwo: patrimonyId.value,
-    delete: false
+    status: 'new'
   })
 
   patrimonyId.value = ''
@@ -78,7 +84,7 @@ const removePatrimonyConnection = (id: string) => {
   state.value.push({
     patrimonyIdOne: find?.patrimonyIdOne,
     patrimonyIdTwo: find?.patrimonyIdTwo,
-    delete: find.delete === true ? false : true  
+    status: find.status === 'new' ? 'delete' : 'new'  
   })
 }
 
@@ -137,7 +143,7 @@ const filteredRows = computed(() => {
                 <div class="flex gap-2 items-center" v-for="item in state" :key="item.patrimonyIdOne">
                   <span class=" font-bold "> {{patrimonies.find(x => x.id === item.patrimonyIdTwo)?.description
                     }}</span>
-                  <UButton size="2xs" :icon="item.delete ? 'i-heroicons-link-slash-20-solid' :  'i-heroicons-link-20-solid'" variant="solid" :color="item.delete ? 'red' : 'green'"
+                  <UButton size="2xs" :icon="item.status === 'delete' ? 'i-heroicons-link-slash-20-solid' :  'i-heroicons-link-20-solid'" variant="solid" :color="item.status === 'delete' ? 'red' : item.status === 'new' ? 'green' : 'blue'"
                     @click="removePatrimonyConnection(item.patrimonyIdTwo)" />
                 </div>
               </div>

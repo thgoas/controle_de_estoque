@@ -1,12 +1,15 @@
 import type { MovementData, Patrimony, PatrimonyConnection, StatusData } from '~/core/Patrimony'
 import { IconToast, ToastType } from '~/core/Toast'
+import { getErrorMessage } from '~/erros/errorMessage'
 
 const patrimonies = ref<Patrimony[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
 
 export default function usePatrimony() {
-    const { addToast } = useMyToast()
+    const {errorToast, successToast } = useMyToast()
+
+
     const getAllPatrimonies = async () => {
         loading.value = true
         try {
@@ -17,13 +20,9 @@ export default function usePatrimony() {
                 },
             })
         } catch (e) {
-            error.value = (e as Error).message
-            addToast({
-                type: ToastType.Error,
-                title: 'Error',
-                description: (e as any).message,
-                icon: IconToast.Error,
-            })
+            error.value = getErrorMessage(e)
+            
+           errorToast(e)
         } finally {
             loading.value = false
         }
@@ -43,21 +42,11 @@ export default function usePatrimony() {
             })
             patrimonies.value.push(response)
 
-
-            addToast({
-                type: ToastType.Success,
-                title: 'Success',
-                description: 'Patrimônio criado com sucesso!',
-                icon: IconToast.Success,
-            })
+            successToast('Patrimônio criado com sucesso!')
+            
         } catch (e) {
-            error.value = (e as Error).message
-            addToast({
-                type: ToastType.Error,
-                title: 'Error',
-                description: (e as any).message,
-                icon: IconToast.Error,
-            })
+            error.value = getErrorMessage(e)
+           errorToast(e)
         } finally {
             loading.value = false
         }
@@ -75,21 +64,15 @@ export default function usePatrimony() {
                 body: JSON.stringify(data),
             })
             const index = patrimonies.value.findIndex((f) => f.id === id)
+            if(index !== -1) {
+                patrimonies.value[index] = response
+            }
             patrimonies.value[index] = response
-            addToast({
-                type: ToastType.Success,
-                title: 'Success',
-                description: 'Patrimônio atualizado com sucesso!',
-                icon: IconToast.Success,
-            })
+            successToast('Patrimônio atualizado com sucesso!')
+            
         } catch (e) {
-            error.value = (e as Error).message
-            addToast({
-                type: ToastType.Error,
-                title: 'Error',
-                description: (e as any).message,
-                icon: IconToast.Error,
-            })
+            error.value = getErrorMessage(e)
+           errorToast(e)
         } finally {
             loading.value = false
         }
@@ -105,22 +88,14 @@ export default function usePatrimony() {
                     Authorization: `Bearer ${useCookie('auth_token').value}`,
                 },
             })
-            const index = patrimonies.value.findIndex((f) => f.id === id)
-            patrimonies.value.splice(index as number, 1)
-            addToast({
-                type: ToastType.Success,
-                title: 'Success',
-                description: 'Patrimônio deletado com sucesso!',
-                icon: IconToast.Success,
-            })
+            
+            patrimonies.value = patrimonies.value.filter((f) => f.id !== id)
+
+            successToast('Patrimônio deletado com sucesso!')
+            
         } catch (e) {
-            error.value = (e as Error).message
-            addToast({
-                type: ToastType.Error,
-                title: 'Error',
-                description: (e as any).message,
-                icon: IconToast.Error,
-            })
+            error.value = getErrorMessage(e)
+           errorToast(e)
         } finally {
             loading.value = false
         }
@@ -143,20 +118,12 @@ export default function usePatrimony() {
             )
             const index = patrimonies.value.findIndex((f) => f.id === id)
             patrimonies.value[index] = response
-            addToast({
-                type: ToastType.Success,
-                title: 'Success',
-                description: 'Patrimônio movido com sucesso!',
-                icon: IconToast.Success,
-            })
+
+            successToast('Patrimônio movido com sucesso!')
+            
         } catch (e) {
-            error.value = (e as Error).message
-            addToast({
-                type: ToastType.Error,
-                title: 'Error',
-                description: (e as any).message,
-                icon: IconToast.Error,
-            })
+            error.value = getErrorMessage(e)
+           errorToast(e)
         } finally {
             loading.value = false
         }
@@ -180,20 +147,12 @@ export default function usePatrimony() {
             )
             const index = patrimonies.value.findIndex((f) => f.id === id)
             patrimonies.value[index] = response
-            addToast({
-                type: ToastType.Success,
-                title: 'Success',
-                description: 'Status do Patrimônio alterado com sucesso!',
-                icon: IconToast.Success,
-            })
+
+            successToast('Status do Patrimônio alterado com sucesso!')
+            
         } catch (e) {
-            error.value = (e as Error).message
-            addToast({
-                type: ToastType.Error,
-                title: 'Error',
-                description: (e as any).message,
-                icon: IconToast.Error,
-            })
+            error.value = getErrorMessage(e)
+           errorToast(e)
         } finally {
             loading.value = false
         }
@@ -212,22 +171,13 @@ export default function usePatrimony() {
                 },
                 body: JSON.stringify(connections),
             })
-            console.log(response)
+           
             patrimonies.value = response
-            addToast({
-                type: ToastType.Success,
-                title: 'Success',
-                description: 'Conexões do Patrimônio Efetuado com sucesso!',
-                icon: IconToast.Success,
-            })
+            successToast('Conexões do Patrimônio Efetuado com sucesso!')
+            
         } catch (e) {
-            error.value = (e as Error).message
-            addToast({
-                type: ToastType.Error,
-                title: 'Error',
-                description: (e as any).message,
-                icon: IconToast.Error,
-            })
+            error.value = getErrorMessage(e)
+           errorToast(e)
         } finally {
             loading.value = false
         }

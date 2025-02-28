@@ -54,7 +54,7 @@ export default eventHandler(async (event) => {
     try {
         for (const item of body) {
             const { patrimonyIdOne, patrimonyIdTwo } = item
-            if (item.delete) {
+            if (item.status === 'delete') {
                 await db
                     .delete(tables.patrimoniesConnections)
                     .where(
@@ -97,7 +97,7 @@ export default eventHandler(async (event) => {
                     description: `Desconectou ${patrimonyIdOne}`,
                     user_identification_id: userAuth.userId,
                 })
-            } else {
+            } else if(item.status === 'new') {
                 await db
                     .insert(tables.patrimoniesConnections)
                     .values({ patrimonyIdOne, patrimonyIdTwo })

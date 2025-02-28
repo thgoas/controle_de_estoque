@@ -113,9 +113,11 @@ watchEffect(() => {
     cleanState()
   } else {
     if (props && props.data) {
-
       state = props.data
       state.price = Number(state.price)
+      state.low_date = state.low_date ? state.low_date : undefined
+      state.guarantee_date = state.guarantee_date ? state.guarantee_date : undefined
+      state.purchase_date = state.purchase_date ? state.purchase_date : undefined
 
     }
   }
@@ -244,9 +246,9 @@ const patrimoniesConnectionsColumns = [
               </UFormGroup>
 
             </div>
-            <UFormGroup label='Baixa' name='low_date' class='w-full'>
+            <UFormGroup label='Notas' name='note' class='w-full'>
 
-              <UTextarea placeholder="Nota" v-model="state.note" />
+              <UTextarea placeholder="Notas" v-model="state.note" />
             </UFormGroup>
 
             <div v-if="state.patrimoniesConnections && state.patrimoniesConnections.length > 0"
