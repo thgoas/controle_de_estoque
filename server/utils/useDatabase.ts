@@ -1,6 +1,6 @@
 import { drizzle, type  NodePgDatabase } from 'drizzle-orm/node-postgres';
 import pg from 'pg';
-
+export * as tables from '~/server/database/schema'
 let database: NodePgDatabase | null = null;
 
 
