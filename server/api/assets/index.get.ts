@@ -30,14 +30,15 @@ export default eventHandler(async (event) => {
          .select()
          .from(tables.assets)
          .orderBy(tables.assets.description)
-       const map = response.map(async (asset) => {
-        const assetsSubgroupAssets = await db.select().from(tables.assetsSubgroupAssets).where(eq(tables.assetsSubgroupAssets.assetsId, asset.id))
-      
+       
+      const assetsSubGroups = await db.select().from(tables.assetsSubgroupAssets)
+       const map = response.map((asset) => {
+        const assetsSubgroupAssets = assetsSubGroups.filter(c => c.assetsId === asset.id)     
         return {
           ...asset,
           assetsSubgroupAssets: assetsSubgroupAssets
         }
        })
-       return  await Promise.all(map)
+       return map
 
 })

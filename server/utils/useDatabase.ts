@@ -8,6 +8,8 @@ export const useDatabase = () => {
   const config = useRuntimeConfig();
   const pool = new pg.Pool({
     connectionString: config.public.pgDbUrl,
+    max:10,
+    
   });
 
   if (config.public.pgDbUrl) {

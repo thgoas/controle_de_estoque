@@ -127,18 +127,16 @@ export default eventHandler(async (event) => {
             .select()
             .from(tables.patrimonies)
             .orderBy(tables.patrimonies.id)
-        const map = response.map(async (r) => {
-            const patrimoniesConnections = await db
-                .select()
-                .from(tables.patrimoniesConnections)
-                .where(eq(tables.patrimoniesConnections.patrimonyIdOne, r.id))
-
-            return {
-                ...r,
-                patrimoniesConnections: patrimoniesConnections,
-            }
-        })
-        return await Promise.all(map)
+            const connections = await db.select().from(tables.patrimoniesConnections)
+            const map = response.map((r) => {
+             const patrimoniesConnections = connections.filter(c => c.patrimonyIdOne === r.id)
+           
+             return {
+               ...r,
+               patrimoniesConnections: patrimoniesConnections
+             }
+            })
+        return map
     } catch (e) {
         throw createError({
             statusCode: 500,

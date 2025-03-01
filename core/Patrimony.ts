@@ -26,7 +26,7 @@ export const Patrimony = z.object({
     provider_id: z.string().optional(),
     patrimoniesConnections: z.array(PatrimonyConnection).optional(),
     status_id: z.string().min(1, 'Deve conter pelo menos 1 caracteres'),
-    connected: z.boolean().default(false).optional(),
+
 })
 
 export type Patrimony = z.infer<typeof Patrimony>

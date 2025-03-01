@@ -82,8 +82,9 @@ export default eventHandler(async (event) => {
                 })
             }         
        
-
-        return response[0]
+            const patrimoniesConnections = await db.select().from(tables.patrimoniesConnections).where(eq(tables.patrimoniesConnections.patrimonyIdOne, response[0].id))
+            return { ...response[0], patrimoniesConnections: patrimoniesConnections }  
+       
     } catch (e) {
         throw createError({
             statusCode: 500,
