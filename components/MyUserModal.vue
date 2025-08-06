@@ -22,6 +22,7 @@ const state = reactive<User>({
     role: UserRole.USER,
     department: '',
     status: true,
+    patrimony: false
 })
 
 const onSubmit = async () => {
@@ -44,6 +45,7 @@ const cleanStates = () => {
     state.role = UserRole.USER
     state.department = ''
     state.status = true
+    state.patrimony = false
 }
 
 
@@ -66,6 +68,7 @@ watchEffect(() => {
       state.role = props.user.role
       state.department = props.user.department
       state.status = props.user.status
+      state.patrimony = props.user.patrimony
 
     }
   }
@@ -119,6 +122,13 @@ watchEffect(() => {
             </UFormGroup>
           </div>
 
+          <div class='flex gap-1'>
+            <UFormGroup label="Patrimônio" name="patrimony" class='w-full'>
+              <UCheckbox v-model="state.patrimony" class='top-1 left-3' />
+            </UFormGroup>
+
+          </div>
+
 
 
 
@@ -130,7 +140,7 @@ watchEffect(() => {
 
         </UForm>
         <div v-else class="flex flex-col gap-3 justify-center items-center h-64" >
-          <h1 class='text-2xl'>Salvando Cliente...</h1>
+          <h1 class='text-2xl'>Salvando Usuário...</h1>
           <UProgress />
         </div>
       </UCard>

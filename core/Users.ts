@@ -24,6 +24,7 @@ import { z } from "zod"
     role: z.nativeEnum(UserRole),
     department: z.string(),
     status: z.boolean().default(true),
+    patrimony: z.boolean().default(false),    
     password: z.string().optional(),
   })
 

@@ -148,15 +148,15 @@ const filteredRows = computed(() => {
     if (!q.value) {
         return patrimonies.value.slice((page.value - 1) * pageCount, (page.value) * pageCount)
     }
-    if(typeSearch.value === 'tudo') {
+    if (typeSearch.value === 'tudo') {
         return patrimonies.value.filter((f) => {
-           
+
             return Object.values(f).some((value) => {
-               
+
                 return String(value).toLowerCase().includes(q.value.toLowerCase())
             })
         }).slice((page.value - 1) * pageCount, (page.value) * pageCount)
-        
+
     } else if (typeSearch.value === 'Patrimônio') {
         return patrimonies.value.filter((f) => {
 
@@ -176,7 +176,7 @@ const filteredRows = computed(() => {
         return patrimonies.value.filter((f) => {
 
             return String(f.purchase_date).toLowerCase().includes(q.value.toLowerCase())
-        }).slice((page.value - 1) * pageCount, (page.value) * pageCount)        
+        }).slice((page.value - 1) * pageCount, (page.value) * pageCount)
     } else if (typeSearch.value === 'Data de Baixa') {
         return patrimonies.value.filter((f) => {
 
@@ -190,27 +190,99 @@ const filteredRows = computed(() => {
     } else if (typeSearch.value === 'Status') {
         return patrimonies.value.filter((f) => {
 
-            return String(f.status_id).toLowerCase().includes(q.value.toLowerCase())        
+            return String(f.status_id).toLowerCase().includes(q.value.toLowerCase())
         }).slice((page.value - 1) * pageCount, (page.value) * pageCount)
-    } else if(typeSearch.value === 'Lojas') {
+    } else if (typeSearch.value === 'Lojas') {
         return patrimonies.value.filter((f) => {
 
             return String(f.store_id).toLowerCase().includes(q.value.toLowerCase())
         }).slice((page.value - 1) * pageCount, (page.value) * pageCount)
-    
-    }else {
+
+    } else {
         return patrimonies.value.filter((f) => {
-        return Object.values(f).some((value) => {
-        return String(value).toLowerCase().includes(q.value.toLowerCase())
-        })
-        }).slice((page.value - 1) * pageCount, (page.value) * pageCount)    
+            return Object.values(f).some((value) => {
+                return String(value).toLowerCase().includes(q.value.toLowerCase())
+            })
+        }).slice((page.value - 1) * pageCount, (page.value) * pageCount)
     }
-  
+
 
     // patrimonies.value.filter((f) => {
-       
+
     //    return Object.values(f).some((value) => {
-          
+
+    //        return String(value).toLowerCase().includes(q.value.toLowerCase())
+    //    })
+})
+
+const filteredRowsLength = computed(() => {
+
+    if (!q.value) {
+        return patrimonies.value.length
+    }
+    if (typeSearch.value === 'tudo') {
+        return patrimonies.value.filter((f) => {
+
+            return Object.values(f).some((value) => {
+
+                return String(value).toLowerCase().includes(q.value.toLowerCase())
+            })
+        }).length
+
+    } else if (typeSearch.value === 'Patrimônio') {
+        return patrimonies.value.filter((f) => {
+
+            return String(f.id).toLowerCase().includes(q.value.toLowerCase())
+        }).length
+    } else if (typeSearch.value === 'Descrição') {
+        return patrimonies.value.filter((f) => {
+
+            return String(f.description).toLowerCase().includes(q.value.toLowerCase())
+        }).length
+    } else if (typeSearch.value === 'Número de Série') {
+        return patrimonies.value.filter((f) => {
+
+            return String(f.serial_number).toLowerCase().includes(q.value.toLowerCase())
+        }).length
+    } else if (typeSearch.value === 'Data de Compra') {
+        return patrimonies.value.filter((f) => {
+
+            return String(f.purchase_date).toLowerCase().includes(q.value.toLowerCase())
+        }).length
+    } else if (typeSearch.value === 'Data de Baixa') {
+        return patrimonies.value.filter((f) => {
+
+            return String(f.low_date).toLowerCase().includes(q.value.toLowerCase())
+        }).length
+    } else if (typeSearch.value === 'Valor') {
+        return patrimonies.value.filter((f) => {
+
+            return String(f.price).toLowerCase().includes(q.value.toLowerCase())
+        }).length
+    } else if (typeSearch.value === 'Status') {
+        return patrimonies.value.filter((f) => {
+
+            return String(f.status_id).toLowerCase().includes(q.value.toLowerCase())
+        }).length
+    } else if (typeSearch.value === 'Lojas') {
+        return patrimonies.value.filter((f) => {
+
+            return String(f.store_id).toLowerCase().includes(q.value.toLowerCase())
+        }).length
+
+    } else {
+        return patrimonies.value.filter((f) => {
+            return Object.values(f).some((value) => {
+                return String(value).toLowerCase().includes(q.value.toLowerCase())
+            })
+        }).length
+    }
+
+
+    // patrimonies.value.filter((f) => {
+
+    //    return Object.values(f).some((value) => {
+
     //        return String(value).toLowerCase().includes(q.value.toLowerCase())
     //    })
 })
@@ -243,8 +315,8 @@ const items = (row: any) => [
                 handleHistoricOpenModal(row)
             }
         },
-        
-    ], 
+
+    ],
     [
         {
             label: 'Movimentar',
@@ -285,6 +357,7 @@ const items = (row: any) => [
         }
     ]
 ]
+
 </script>
 <template>
 
@@ -301,9 +374,12 @@ const items = (row: any) => [
             <div
                 class="flex flex-col sm:flex-row justify-between gap-2 px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
                 <div class="flex flex-col gap-1 sm:flex-row">
-                    <UInput v-if="typeSearch !== 'Status' && typeSearch !== 'Lojas'" v-model="q" placeholder="Procurar..." :type="typeSearch.includes('Data') ? 'date' : 'text'" />
-                    <USelect v-if="typeSearch === 'Status'" v-model="q" :options="status" option-attribute="description" value-attribute="id" />
-                    <USelect v-if="typeSearch === 'Lojas'" v-model="q" :options="stores" option-attribute="description" value-attribute="id"  />
+                    <UInput v-if="typeSearch !== 'Status' && typeSearch !== 'Lojas'" v-model="q"
+                        placeholder="Procurar..." :type="typeSearch.includes('Data') ? 'date' : 'text'" />
+                    <USelect v-if="typeSearch === 'Status'" v-model="q" :options="status" option-attribute="description"
+                        value-attribute="id" />
+                    <USelect v-if="typeSearch === 'Lojas'" v-model="q" :options="stores" option-attribute="description"
+                        value-attribute="id" />
                     <USelect v-model="typeSearch" :options="searchOptions" @change="q = ''" />
                 </div>
                 <div class="flex gap-1">
@@ -320,18 +396,15 @@ const items = (row: any) => [
                     </UDropdown>
                 </template>
                 <template #status_id-data="{ row }">
-                    <UBadge 
-                     size="sm"
-                    :label="status.find((f) => f.id === row.status_id)?.description" 
-                    :color="status.find((f) => f.id === row.status_id)?.color as any"
-                    />
+                    <UBadge size="sm" :label="status.find((f) => f.id === row.status_id)?.description"
+                        :color="status.find((f) => f.id === row.status_id)?.color as any" />
                 </template>
                 <template #store_id-data="{ row }">
-                    <span>{{ stores.find((f) => f.id === row.store_id)?.description }}</span>
+                    <span>{{stores.find((f) => f.id === row.store_id)?.description}}</span>
                 </template>
-            </UTable>   
+            </UTable>
             <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
-                <UPagination v-model="page" :page-count="pageCount" :total="patrimonies.length" />
+                <UPagination v-model="page" :page-count="pageCount" :total="filteredRowsLength" />
             </div>
         </UCard>
     </div>

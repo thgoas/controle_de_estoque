@@ -25,9 +25,9 @@ let state = reactive<Provider>({
   status: true,
   cnpj: '',
   address: '',
-  phone: '',
-  email: '',
-  contact_name: '',
+  phone: undefined,
+  email: undefined,
+  contact_name: undefined,
   cep: '',
   obs: ''
 
@@ -40,9 +40,9 @@ const cleanState = () => {
   state.status = true
   state.cnpj = ''
   state.address = ''
-  state.phone = ''
-  state.email = ''
-  state.contact_name = ''
+  state.phone = undefined
+  state.email = undefined
+  state.contact_name = undefined
   state.cep = ''
   state.obs
 }

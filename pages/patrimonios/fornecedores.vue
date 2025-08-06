@@ -109,6 +109,18 @@ const filteredRows = computed(() => {
     }).slice((page.value - 1) * pageCount, (page.value) * pageCount)
 })
 
+const filteredRowsLength = computed(() => {
+
+    if (!q.value) {
+        return providers.value.length
+    }
+    return providers.value.filter((f) => {
+        return Object.values(f).some((value) => {
+            return String(value).toLowerCase().includes(q.value.toLowerCase())
+        })
+    }).length
+})
+
 const page = ref(1)
 const pageCount = 5
 
@@ -158,7 +170,7 @@ const items = (row: any) => [
                 </template>
             </UTable>
             <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
-                <UPagination v-model="page" :page-count="pageCount" :total="providers.length" />
+                <UPagination v-model="page" :page-count="pageCount" :total="filteredRowsLength" />
             </div>
         </UCard>
     </div>

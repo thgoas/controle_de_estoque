@@ -2,6 +2,7 @@
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import MyProductModal from '~/components/MyProductModal.vue';
 import { Product } from '~/core/Product';
+import { produtos } from '~/server/database/schema';
 // definePageMeta({
 //     middleware: "config"
 // })
@@ -26,9 +27,9 @@ const columns = [
         key: 'marca',
         label: 'Marca'
     },
-  
-    
-    
+
+
+
 ]
 
 
@@ -59,14 +60,14 @@ const selectedProduct = ref<Product>({
 const cleanState = () => {
     selectedProduct.value = {
         id: 0,
-    descricao: '',
-    referencia: '',
-    cor: '',
-    marca: '',
-    complemento: '',
-    grade: '',
-    tipo: '',
-    modelo: '',
+        descricao: '',
+        referencia: '',
+        cor: '',
+        marca: '',
+        complemento: '',
+        grade: '',
+        tipo: '',
+        modelo: '',
     }
 }
 function select(row: Product) {
@@ -82,11 +83,24 @@ const filteredRows = computed(() => {
         return products.value.slice((page.value - 1) * pageCount, (page.value) * pageCount)
     }
     return products.value.filter((department) => {
-            return Object.values(department).some((value) => {
-                return String(value).toLowerCase().includes(q.value.toLowerCase())
-            })
-        }).slice((page.value - 1) * pageCount, (page.value) * pageCount)
+        return Object.values(department).some((value) => {
+            return String(value).toLowerCase().includes(q.value.toLowerCase())
+        })
+    }).slice((page.value - 1) * pageCount, (page.value) * pageCount)
 })
+
+const filteredRowsLength = computed(() => {
+
+    if (!q.value) {
+        return products.value.length
+    }
+    return products.value.filter((department) => {
+        return Object.values(department).some((value) => {
+            return String(value).toLowerCase().includes(q.value.toLowerCase())
+        })
+    }).length
+})
+
 
 const page = ref(1)
 const pageCount = 5
@@ -119,7 +133,7 @@ function newProduct() {
                 :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
                 :progress="{ color: 'primary', animation: 'carousel' }" @select="select" />
             <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
-                <UPagination v-model="page" :page-count="pageCount" :total="products.length" />
+                <UPagination v-model="page" :page-count="pageCount" :total="filteredRowsLength" />
             </div>
         </UCard>
     </div>

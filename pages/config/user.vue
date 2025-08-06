@@ -75,7 +75,8 @@ const selectedUser = ref<User>({
     password: '',
     role: UserRole.USER,
     department: '',
-    status: true
+    status: true,
+    patrimony: false
 })
 
 const cleanSelectedUser = () => {
@@ -86,7 +87,8 @@ const cleanSelectedUser = () => {
         password: '',
         role: UserRole.USER,
         department: '',
-        status: true
+        status: true,
+        patrimony: false
     }
 }
 function select(row: User) {
@@ -108,6 +110,20 @@ const filteredRows = computed(() => {
             })
         }).slice((page.value - 1) * pageCount, (page.value) * pageCount)
 })
+
+const filteredRowsLength = computed(() => {
+
+    if (!q.value) {
+        return users.value.map((person: UserResponse) => mapUser(person)).length
+    }
+    return users.value.map((person: UserResponse) => (mapUser(person)))
+        .filter((person) => {
+            return Object.values(person).some((value) => {
+                return String(value).toLowerCase().includes(q.value.toLowerCase())
+            })
+        }).length
+})
+
 
 const page = ref(1)
 const pageCount = 5
@@ -140,7 +156,7 @@ function newUser() {
                 :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
                 :progress="{ color: 'primary', animation: 'carousel' }" @select="select" />
             <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
-                <UPagination v-model="page" :page-count="pageCount" :total="users.length" />
+                <UPagination v-model="page" :page-count="pageCount" :total="filteredRowsLength" />
             </div>
         </UCard>
     </div>
