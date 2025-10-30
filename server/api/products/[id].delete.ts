@@ -46,11 +46,30 @@ export default eventHandler(async (event) => {
             statusMessage: 'Internal Server Error',
         })
     }
+    try {
+        const produtos = await db
+            .delete(tables.produtos)
+            .where(eq(tables.produtos.id, Number(cid)))
+            .returning()
+        if(produtos.length === 0) {
+            throw createError({
+                statusCode: 404,
+                statusMessage: 'Product not found',
+            })
+        }
+        
+        await db.delete(tables.images)
+            .where(eq(tables.images.product_id, Number(cid)))   
+            
+        await db.delete(tables.movimentos).where(eq(tables.movimentos.produtoId, Number(cid)))    
+    
+        return produtos[0]
 
-    const department = await db
-        .delete(tables.department)
-        .where(eq(tables.department.id, cid))
-        .returning()
-
-    return department[0]
+    } catch (error) {
+        console.error('Error deleting product:', error)
+        throw createError({
+            statusCode: 500,
+            statusMessage: 'Internal Server Error',
+        })
+    }
 })

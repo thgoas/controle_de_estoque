@@ -82,6 +82,32 @@ export function useProducts() {
          loading.value = false
       }
    }
+   const deleteProduct = async (id: number) => {
+      loading.value = true
+      try {
+         await $fetch<void>(`/api/products/${id}`, {
+            method: 'DELETE',
+            headers: {
+               'Content-Type': 'application/json',
+               Authorization: `Bearer ${useCookie('auth_token').value}`,
+            },
+         })
+         const index = products.value.findIndex(
+            (product) => product.id === id
+        )
+        products.value.splice(index as number, 1)
+      } catch (e) {
+         error.value = (e as Error).message
+         addToast({
+            type: ToastType.Error,
+            title: 'Error',
+            description: (e as any).message,
+            icon: IconToast.Error,
+         })
+      } finally {
+         loading.value = false
+      }
+   }
 
    onMounted(async () => {
       await getAllProducts()
@@ -93,6 +119,7 @@ export function useProducts() {
       error,
       getAllProducts,
       createProduct,
-      updateProduct
+      updateProduct,
+      deleteProduct
    }
 }

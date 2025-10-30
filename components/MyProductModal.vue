@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { is } from 'drizzle-orm'
 import type { Image } from '~/core/Images'
 import { Product } from '~/core/Product'
 
 const isProductOpen = useProductOpen()
+const isDeleteOpen = useDeleteOpen()
 
-const { updateProduct, createProduct, loading } = useProducts()
+const { updateProduct, createProduct, loading, deleteProduct } = useProducts()
 // const { uploadImage } = useImages()
 const { addToast } = useMyToast()
 import { IconToast, ToastType } from '~/core/Toast'
@@ -171,9 +173,21 @@ const onFileChange = (event: any) => {
         imagePreview.value = URL.createObjectURL(file)
     }
 }
+const handleDeleteProduct = async () => {
+    if (state.id && state.id !== 0) {
+        await deleteProduct(state.id)
+        isProductOpen.value = false
+    }
+}
+
+const handleDeleteModal = () => {
+    isDeleteOpen.value = true
+}
+
 </script>
 
 <template>
+    <MyDeleteModal title="Deletar Produto" :description="state.descricao" :fn="handleDeleteProduct" />
     <div>
         <UModal v-model="isProductOpen">
             <UCard :ui="{
@@ -282,7 +296,11 @@ const onFileChange = (event: any) => {
                     </div>
 
                     <div class="flex gap-2 justify-between">
-                        <UButton label="Fechar" color="red" @click="closed" />
+                        <div class="flex gap-2">   
+                            <UButton label="Fechar" color="red" @click="closed"  />
+                            <UButton label="Deletar" color="yellow" @click="handleDeleteModal" v-if="state.id != 0"/>
+
+                        </div>
                         <UButton label="Salvar" type="onSubmit" />
                     </div>
                 </UForm>
