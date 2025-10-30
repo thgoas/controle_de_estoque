@@ -16,6 +16,7 @@ export function useMovimentos() {
         try {
             const response = await $fetch<Movimento[]>('/api/movimentos')
             movimentos.value = response
+           
         } catch (e) {
             error.value = (e as Error).message
             addToast({
@@ -68,7 +69,7 @@ export function useMovimentos() {
                 },
             })
             movimentosCount.value = response
-        
+           
         } catch (e) {
             error.value = (e as Error).message
             addToast({

@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { Image } from "./Images";
+
 
 export const Product = z.object({
     id: z.number().optional(),
@@ -10,6 +12,7 @@ export const Product = z.object({
     grade: z.string().min(1, 'Deve conter pelo menos 1 caracteres'),
     tipo: z.string().min(2, 'Deve conter pelo menos 2 caracteres'),
     modelo: z.string().min(2, 'Deve conter pelo menos 2 caracteres'),
+    image:  Image.optional(), 
 })
 
 export type Product = z.infer<typeof Product>

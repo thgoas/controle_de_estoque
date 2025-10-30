@@ -99,6 +99,13 @@ const filteredRowsLength  = computed(() => {
         <UTable :loading="loading" :columns="selectedColumns" :rows="filteredRows"
             :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
             :progress="{ color: 'primary', animation: 'carousel' }" @select="select">
+            <template #produto-data="{ row }">
+                <div class="flex items-center gap-2">
+                    <img :src="row.image.data" alt="Product Image" class="w-10 h-10 object-cover rounded" v-if="row.image && row.image.data"/>
+                    <div v-else class="w-10 h-10 bg-gray-200"></div>
+                    <span class="">{{ row.produto }}</span>
+                </div>
+            </template>
 
             <template #grade-quantidade-data="{ row }">
                 <div class="flex gap-2  justify-center">

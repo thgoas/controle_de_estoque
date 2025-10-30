@@ -19,12 +19,33 @@ export default eventHandler(async (event) => {
         statusMessage: 'Internal Server Error',
       })
     }
+
+    try {
   
     const products = await db
       .select()
       .from(tables.produtos)
       .where(eq(tables.produtos.departamento, userAuth.department))
       .orderBy(tables.produtos.descricao)
-  
-    return products
+      const productsWithImages = []
+      for (const product of products) {
+        const images = await db
+          .select()
+          .from(tables.images)
+          .where(eq(tables.images.product_id, product.id))  
+          .limit(1)
+        productsWithImages.push({
+          ...product, 
+          image: images[0]
+        })
+      }
+      
+    return productsWithImages
+    } catch (error) {
+      console.error('Error fetching products:', error)
+        throw createError({
+            statusCode: 500,
+            statusMessage: 'Internal Server Error',
+        })
+    }
 })

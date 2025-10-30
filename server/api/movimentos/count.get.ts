@@ -72,7 +72,18 @@ export default eventHandler(async (event) => {
         }
     })
 
-  
+   const productsWithImages = []
+      for (const product of map) {
+        const images = await db
+          .select()
+          .from(tables.images)
+          .where(eq(tables.images.product_id, product.id))  
+          .limit(1)
+        productsWithImages.push({
+          ...product, 
+          image: images[0]
+        })
+      }
       
-    return map
+    return productsWithImages
 })

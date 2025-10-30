@@ -67,6 +67,7 @@ onMounted(async () => {
     <UCard>
         <div class="flex flex-col sm:flex-row justify-between">
             <h3 class="font-bold text-xl">Produto</h3>
+          
             <div class="flex flex-col sm:flex-row gap-2">
                 <UButton
                     :size="isMobile ? 'xs' : 'sm'"
@@ -90,8 +91,10 @@ onMounted(async () => {
                     @click="movimentoClick('Saida')"
                 />
             </div>
-        </div>
 
+        </div>
+  <img :src="state?.image.data" alt="product image" class="w-32 h-32 object-cover rounded" v-if="state?.image && state?.image.data"/>
+  <div v-else class="w-32 h-32 bg-gray-200"></div>
         <div class="flex gap-2 my-2">
             <span class="font-bold">Código:</span>
             <span>{{ state?.id }}</span>

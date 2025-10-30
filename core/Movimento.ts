@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { Image } from "./Images";
 
 export const Movimento = z.object({
     tipoMovimento: z.string().min(4, 'Deve conter pelo menos 4 caracteres'),
@@ -24,6 +25,7 @@ export interface MovimentoCount {
     grade: string[]
     gradeQuantidade: MovimentoCountGrade[]
     total: number
+    image: Image
 }
 
 export interface MovimentoCountGrade {

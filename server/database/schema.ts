@@ -182,3 +182,16 @@ export const stores = pgTable('stores', {
     createdAt: timestamp('created_at').default(sql`now()`),
     updatedAt: timestamp('updated_at').default(sql`now()`),
 })
+
+export const images = pgTable('images', {
+    id: text('id').primaryKey(),
+    product_id: integer('product_id').unique(),
+    patrimonies_id: text('patrimonies_id').unique(),
+    historical_id: text('historical_id'),
+    user_id: text('user_id'),   
+    name: text('name').notNull(),   
+    type: text('type').notNull(),
+    data: text('data').notNull(),
+    createdAt: timestamp('created_at').default(sql`now()`),
+    updatedAt: timestamp('updated_at').default(sql`now()`),
+})

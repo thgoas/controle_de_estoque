@@ -1,10 +1,13 @@
 import { eq } from 'drizzle-orm'
+import { v4 } from 'uuid'
 import { Product } from '~/core/Product'
+
 import { DecodedUserAuth } from '~/server/utils/DecodedUserAuth'
 
 export default eventHandler(async (event) => {
-    const body = await readBody<Product>(event)
 
+    const body = await readBody<Product>(event)
+    
     const result = Product.safeParse(body)
 
     if (!result.success) {
@@ -51,6 +54,33 @@ export default eventHandler(async (event) => {
         tipo: body.tipo,
         modelo: body.modelo,
     }
+
+    let image 
+    if(body.image?.name && body.image?.type && body.image?.data) {
+        if (!['image/png', 'image/jpeg'].includes(body.image.type)) {
+            return createError({
+                statusCode: 400,
+                statusMessage: 'Apenas imagens PNG ou JPEG são permitidas',
+            })
+        }
+        if (body.image.data.length > 10 * 1024 * 1024) {
+            // Limite de 10MB
+            return createError({
+                statusCode: 400,
+                statusMessage: 'A imagem deve ter menos de 10MB',
+            })
+        }
+        image = {
+        id: v4(),
+        name: body.image.name,
+        type: body.image.type,
+        data: body.image.data,
+        user_id: userAuth.userId,
+        }
+    }
+
+   
+
     const productExist = await db.select().from(tables.produtos).where(eq(tables.produtos.referencia, body.referencia!))
     if (productExist.length > 0) {
         throw createError({
@@ -63,8 +93,24 @@ export default eventHandler(async (event) => {
             .insert(tables.produtos)
             .values({ ...product, departamento: userAuth.department })
             .returning()
+        
+            let imageSave
+        if(image !== undefined) {
+          imageSave =  await db.insert(tables.images)
+                .values({...image, product_id: response[0].id})
+                .onConflictDoUpdate({   
+                    target: tables.images.product_id,
+                    set: {
+                        name: image.name,
+                        type: image.type,
+                        data: image.data,
+                    },
+                }).returning()
+        }
 
-        return response[0]
+
+
+        return {...response[0]  , image: imageSave ? imageSave[0] : null}
     } catch (error) {
         console.log(error)
         throw createError({

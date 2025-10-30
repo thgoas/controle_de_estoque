@@ -1,8 +1,11 @@
 <script setup lang='ts'>
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import MyProductModal from '~/components/MyProductModal.vue';
-import { Product } from '~/core/Product';
-import { produtos } from '~/server/database/schema';
+import MyProductModal from '~/components/MyProductModal.vue'
+import { Image } from '~/core/Images'
+import { Product } from '~/core/Product'
+import { images, produtos } from '~/server/database/schema'
+
+
 // definePageMeta({
 //     middleware: "config"
 // })
@@ -15,7 +18,7 @@ const isProductOpen = useProductOpen()
 
 
 const columns = [
-    {
+     {
         key: 'descricao',
         label: 'Descrição'
     },
@@ -30,7 +33,7 @@ const columns = [
 
 
 
-]
+ ]
 
 
 const selectedColumns = ref([...columns])
@@ -44,7 +47,7 @@ watchEffect(() => {
 })
 
 const q = ref('')
-
+const image = ref<Image | null>(null)   
 const selectedProduct = ref<Product>({
     id: 0,
     descricao: '',
@@ -55,6 +58,12 @@ const selectedProduct = ref<Product>({
     grade: '',
     tipo: '',
     modelo: '',
+    image: {
+        
+        name: '',
+        type: '',
+        data: '',
+    },
 })
 
 const cleanState = () => {
@@ -68,6 +77,11 @@ const cleanState = () => {
         grade: '',
         tipo: '',
         modelo: '',
+        image: {
+            name: '',
+            type: '',
+            data: '',
+        },
     }
 }
 function select(row: Product) {
@@ -131,7 +145,18 @@ function newProduct() {
             </div>
             <UTable :loading="loading" :columns="selectedColumns" :rows="filteredRows"
                 :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
-                :progress="{ color: 'primary', animation: 'carousel' }" @select="select" />
+                :progress="{ color: 'primary', animation: 'carousel' }" @select="select" > 
+                <template #descricao-data="{ row }">
+                    <div class="flex items-center gap-2">
+                        <img :src="row.image.data" alt="Product Image" class="w-7 h-7 object-cover rounded" v-if="row.image && row.image.data"/>
+                        <div v-else class="w-7 h-7 bg-gray-200"></div>
+                        <div>
+                            <p class="">{{ row.descricao }}</p>
+                        </div>
+                    </div>
+                    
+                </template>
+            </UTable>
             <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
                 <UPagination v-model="page" :page-count="pageCount" :total="filteredRowsLength" />
             </div>

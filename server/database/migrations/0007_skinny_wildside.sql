@@ -1,0 +1,1 @@
+ALTER TABLE "images" ALTER COLUMN "product_id" SET DATA TYPE integer;
